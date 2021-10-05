@@ -17,8 +17,13 @@ function getJSON(url, successFn, errorFn){
   fetch(url)
   .then(response => response.json())
   .then((data) =>  {
-    console.log(data);
-    successFn(data);
+
+    if (data.status !== 404 ) {
+      successFn(data);
+    }else{
+      errorFn();
+    }
+
   })
 }
 
@@ -44,7 +49,8 @@ function showCountries(countries){
 }
 
 function showCountriesError() {
-
+  elCountriesList.innerHTML = "";
+  elCountriesList.textContent = "Not found";
 }
 
 function onCounryFormSubmit(evt) {
@@ -65,8 +71,10 @@ function updateCountryModal(data) {
   elCountryModalName.textContent = data[0].name.common;
   elCountryModal.querySelector(".info-country__img").src = data[0].flags.svg;
   elCountryModal.querySelector(".country__details-region").textContent = data[0].region;
-  elCountryModal.querySelector(".country__details-currency").textContent = data[0].currencies[0].name;
-  elCountryModal.querySelector(".country__details-borders").textContent = data[0].borders[0];
+  // elCountryModal.querySelector(".country__details-currency").textContent = data[0].currencies;
+  elCountryModal.querySelector(".country__details-borders").textContent = data[0].borders.join(", ");
+  console.log(data[0].currencies);
+  console.log(data[0].borders);
 }
 
 // RUN FUNCITONS
